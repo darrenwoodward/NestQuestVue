@@ -31,10 +31,10 @@ export default {
     updateCoffeeShops(coffeeShops) {
       this.coffeeShops = coffeeShops;
     }, 
-    handleCoffeeShopsLoaded(coffeeShops) {
+    handleCoffeeShopsLoaded(businesses) {
       // do something with the loaded coffee shops
-      console.log(coffeeShops);
-      this.updateCoffeeShops(coffeeShops);
+      console.log(businesses);
+      this.updateCoffeeShops(businesses);
     }
   },
 };

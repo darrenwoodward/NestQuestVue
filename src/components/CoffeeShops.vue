@@ -1,12 +1,4 @@
 <template>
-  <div>
-    <h2>Coffee Shops</h2>
-    <ul>
-      <li v-for="shop in coffeeShops" :key="shop.name">
-        {{ shop.name }}
-      </li>
-    </ul>
-  </div>
 </template>
 
 <script>
@@ -25,7 +17,37 @@ export default {
     const { result } = useQuery(
       gql`
         query CoffeeShops($latitude: Float!, $longitude: Float!, $limit: Int!) {
-          search(term: "coffee", latitude: $latitude, longitude: $longitude, limit: $limit) {
+          coffeeShops: search(term: "coffee", latitude: $latitude, longitude: $longitude, limit: $limit) {
+            business {
+              name
+              coordinates {
+                latitude
+                longitude
+              }
+            }
+          }
+          
+          groceryStores: search(term: "grocery", latitude: $latitude, longitude: $longitude, limit: $limit) {
+            business {
+              name
+              coordinates {
+                latitude
+                longitude
+              }
+            }
+          }
+
+          restaurant: search(term: "restaurant", latitude: $latitude, longitude: $longitude, limit: $limit) {
+            business {
+              name
+              coordinates {
+                latitude
+                longitude
+              }
+            }
+          }
+
+          library: search(term: "library", latitude: $latitude, longitude: $longitude, limit: $limit) {
             business {
               name
               coordinates {
@@ -37,7 +59,7 @@ export default {
         }
       `,
       { latitude: props.coordinates[1], longitude: props.coordinates[0], limit: 1 }
-    )
+    );
 
     const coffeeShops = result.value?.data?.search?.business ?? []
 
@@ -47,7 +69,7 @@ export default {
 
     const watchResult = () => {
       if (result.value) {
-        emitCoffeeShopsLoaded(result.value.search.business)
+        emitCoffeeShopsLoaded(result.value)
       }
     }
 

@@ -30,7 +30,8 @@ export default {
       coordinates: [],
       markers: [],
       directions: {},
-      matrix: []
+      matrix: [], 
+      shopInfo: {}
     }
   },
   watch: {
@@ -48,7 +49,7 @@ export default {
       container: 'map',
       style: 'mapbox://styles/mapbox/light-v11',
       center: [-96, 37.8], // default center
-      zoom: 9 // default zoom
+      zoom: 8 // default zoom
     })
     this.map = map;
     const geolocate = new mapboxgl.GeolocateControl({
@@ -92,17 +93,27 @@ export default {
     },
 
     addMarkers(coffeeShops) {
+      this.shopInfo = coffeeShops;
       // Remove existing markers
       this.markers.forEach((marker) => marker.remove())
       this.markers = []
 
       // Add markers for each coffee shop
-      coffeeShops.forEach((shop) => {
-        const marker = new mapboxgl.Marker()
-          .setLngLat([shop.coordinates.longitude, shop.coordinates.latitude])
+      Object.entries(coffeeShops).forEach((shop) => {
+        const [businessType, shopData] = shop
+        var shopCoords = shopData.business[0].coordinates;
+        var el = document.createElement('div');
+        el.className = businessType;
+
+
+        
+        //Add Custom Markers Based on shop.business
+        const marker = new mapboxgl.Marker(el)
+          .setLngLat([shopCoords.longitude, shopCoords.latitude])
           .addTo(this.map)
+
         this.markers.push(marker)
-        this.addDirections(shop.coordinates.longitude, shop.coordinates.latitude);
+        this.addDirections(shopCoords.longitude, shopCoords.latitude);
 
       })
     },
@@ -176,7 +187,7 @@ export default {
             'line-cap': 'round'
           },
           paint: {
-            'line-color': '#3887be',
+            'line-color': '#83C5BE',
             'line-width': 5,
             'line-opacity': 0.75
           }
@@ -184,14 +195,14 @@ export default {
 
         //TODO - Refactor so that the bounds do not get set to the starting point LatLng Value so that the map does not zoom in and then out. 
         // Get the bounds of the route
-        const bounds = new mapboxgl.LngLatBounds();
-        route.forEach(function (point) {
-          bounds.extend(point);
-        });
-        // Fit the map to the bounds
-        this.map.fitBounds(bounds, {
-          padding: 20
-        });
+        // const bounds = new mapboxgl.LngLatBounds();
+        // route.forEach(function (point) {
+        //   bounds.extend(point);
+        // });
+        // // Fit the map to the bounds
+        // this.map.fitBounds(bounds, {
+        //   padding: 20
+        // });
       } catch (error) {
         console.log(error)
       }
@@ -216,6 +227,7 @@ export default {
     },
     //TODO - This method should update the UI as shown in the FIGMA spec
     updateTravelInfo(distances, durations) {
+
       for (let i = 0; i < distances.length; i++) {
         //Convert meters to miles
         if (distances[i][0] !== 0) {

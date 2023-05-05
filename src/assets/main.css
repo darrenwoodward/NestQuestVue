@@ -463,6 +463,44 @@ a,
   visibility:hidden;
   }
 
+.coffeeShops {
+  background-image: url('../assets/icons/ph_coffee-fill.png');
+  background-size:cover;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.groceryStores {
+  background-image: url('../assets/icons/ph_shop-fill.png');
+  background-size:cover;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.library {
+  background-image: url('../assets/icons/ph_library-fill.png');
+  background-size:cover;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.restaurant {
+  background-image: url('../assets/icons/ph_eatery-fill.png');
+  background-size:cover;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+
+
 /* Mobile */
 @media only screen and (max-width:640px) {
 
